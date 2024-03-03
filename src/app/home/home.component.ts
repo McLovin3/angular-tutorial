@@ -12,10 +12,22 @@ import { Housinglocation } from "../housinglocation";
   styleUrl: "./home.component.css",
 })
 export class HomeComponent {
-  housingLocationList: Housinglocation[] = [];
   housingService: HousingService = inject(HousingService);
+  housingLocationList: Housinglocation[] = [];
+  filteredLocationList: Housinglocation[] = [];
 
   constructor() {
     this.housingLocationList = this.housingService.getAllHousingLocations();
+    this.filteredLocationList = this.housingLocationList;
+  }
+
+  filterResults(text: string) {
+    if (!text) {
+      this.filteredLocationList = this.housingLocationList;
+    } else {
+      this.filteredLocationList = this.housingLocationList.filter((location) =>
+        location.name.toLowerCase().includes(text.toLowerCase())
+      );
+    }
   }
 }
